@@ -20,7 +20,9 @@ import org.springframework.data.convert.Jsr310Converters;
 import com.sena.minhasfinancas.model.enums.StatusLancamento;
 import com.sena.minhasfinancas.model.enums.TipoLancamento;
 
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "lancamento", schema = "financas")
 public class Lancamento {
