@@ -3,6 +3,7 @@ package com.sena.minhasfinancas.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sena.minhasfinancas.exception.RegraNegocioException;
 import com.sena.minhasfinancas.model.entity.Usuario;
 import com.sena.minhasfinancas.model.repositories.UsuarioRepository;
 import com.sena.minhasfinancas.service.UsuarioService;
@@ -28,7 +29,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	public void validarEmail(String email) {
 
-		repository.
+		boolean existe = repository.existsByEmail(email);
+		
+		if(existe) {
+			throw new RegraNegocioException("Já existe um usuário com esse email");
+		}
 		
 	}
 
