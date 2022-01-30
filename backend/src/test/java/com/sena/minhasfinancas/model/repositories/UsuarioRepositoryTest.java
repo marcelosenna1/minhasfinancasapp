@@ -1,5 +1,7 @@
 package com.sena.minhasfinancas.model.repositories;
 
+import javax.persistence.Entity;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -20,6 +23,9 @@ public class UsuarioRepositoryTest {
 
 	@Autowired
 	private UsuarioRepository repository;
+	
+	@Autowired
+	private TestEntityManager entityManager;
 
 	@Test
 	public void verificarExistenciaEmail() {
@@ -27,8 +33,7 @@ public class UsuarioRepositoryTest {
 		// Cenário
 
 		Usuario usuario = Usuario.builder().nome("Marcelo").email("marcelomarcos2@gmail.com").build();
-		repository.save(usuario);
-
+		entityManager.persist(usuario);
 		// Ação/execução
 		boolean result = repository.existsByEmail("marcelomarcos2@gmail.com");
 
@@ -39,11 +44,7 @@ public class UsuarioRepositoryTest {
 	
 	@Test
 	public void deveRetornarFalsoQuandoNaoHouverUsuarioCadastradoComEmail() {
-		
-		// Cenário
-		
-		repository.deleteAll();
-		
+						
 		// Ação
 		boolean result = repository.existsByEmail("marcelomarcos2@gmail.com");
 		
