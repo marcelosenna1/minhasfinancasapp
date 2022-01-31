@@ -1,41 +1,42 @@
 package com.sena.minhasfinancas.service;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.Mockito;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.sena.minhasfinancas.exception.RegraNegocioException;
-import com.sena.minhasfinancas.model.entity.Usuario;
 import com.sena.minhasfinancas.model.repositories.UsuarioRepository;
+import com.sena.minhasfinancas.service.impl.UsuarioServiceImpl;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
 @ActiveProfiles("test")
 public class UsuarioServiceTest {
 
-	@Autowired
 	private UsuarioService service;
 
-	@Autowired
 	private UsuarioRepository repository;
+
+	@Before
+	public void setUp() {
+		repository = Mockito.mock(UsuarioRepository.class);
+		service = new UsuarioServiceImpl(repository);
+
+	}
 
 	@Test
 	public void deveValidarEmail() throws RegraNegocioException {
-
-		repository.deleteAll();
-
+		Mockito.when(repository.existsByEmail(Mockito.anyString())).thenReturn(false);
 		service.validarEmail("marcelomarcos2@gmail.com");
 	}
 
 	@Test
 	public void deveLancarErroQuandoExistirEmail() {
 
-		Usuario usuario = Usuario.builder().nome("marcos").email("marcos@marcos.com").build();
-		repository.save(usuario);
-		
+		Mockito.when(repository.existsByEmail(Mockito.anyString())).thenReturn(true);
+
 		try {
 			service.validarEmail("email@email.com");
 		} catch (RegraNegocioException e) {

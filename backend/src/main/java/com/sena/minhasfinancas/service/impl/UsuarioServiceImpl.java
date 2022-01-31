@@ -18,6 +18,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Autowired
 	private UsuarioRepository repository;
 
+	public UsuarioServiceImpl(UsuarioRepository repository2) {
+	}
+
 	@Override
 	public Usuario autenticar(String email, String senha) {
 
